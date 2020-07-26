@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -15,7 +16,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.web.access.channel.ChannelProcessingFilter;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import com.sadik.web.authprovider.JwtDaoAuthenticationProvider;
 import com.sadik.web.filters.CorsFilter;
 import com.sadik.web.filters.JwtAuthenticationProviderFilter;
 import com.sadik.web.filters.VerifyTokenFilter;
@@ -30,14 +30,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	private TokenService tokenService;
 
 	@Autowired
-	private JwtDaoAuthenticationProvider authProvider;
+	private AuthenticationProvider authProvider;
 
 	@Bean
 	public AuthenticationManager authenticationManager() {
 		return new ProviderManager(Arrays.asList(authProvider));
 	}
 
-	// .csrf() is optional, enabled by default, if using
 	// WebSecurityConfigurerAdapter constructor
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
@@ -60,9 +59,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	public void configure(WebSecurity web) throws Exception {
 		// Filters will not get executed for the resources
-		web.ignoring().antMatchers("/", "/resources/**", "/static/**", "/public/**", "/webui/**", "/h2-console/**",
-				"/configuration/**", "/swagger-ui/**", "/swagger-resources/**", "/api-docs", "/api-docs/**",
-				"/v2/api-docs/**", "/*.html", "/**/*.html", "/**/*.css", "/**/*.js", "/**/*.png", "/**/*.jpg",
-				"/**/*.gif", "/**/*.svg", "/**/*.ico", "/**/*.ttf", "/**/*.woff", "/**/*.otf");
+		web.ignoring().antMatchers("/", "/api/v1/hello", "/resources/**", "/static/**", "/public/**", "/webui/**",
+				"/h2-console/**", "/configuration/**", "/swagger-ui/**", "/swagger-resources/**", "/api-docs",
+				"/api-docs/**", "/v2/api-docs/**", "/*.html", "/**/*.html", "/**/*.css", "/**/*.js", "/**/*.png",
+				"/**/*.jpg", "/**/*.gif", "/**/*.svg", "/**/*.ico", "/**/*.ttf", "/**/*.woff", "/**/*.otf");
 	}
 }

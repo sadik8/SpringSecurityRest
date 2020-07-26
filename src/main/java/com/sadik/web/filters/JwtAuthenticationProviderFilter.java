@@ -58,7 +58,7 @@ public class JwtAuthenticationProviderFilter extends AbstractAuthenticationProce
 			return getAuthenticationManager().authenticate(authToken); // This will take to successfulAuthentication or
 																		// faliureAuthentication function
 		} catch (JSONException | AuthenticationException e) {
-			throw new AuthenticationServiceException(e.getMessage());
+			throw new AuthenticationServiceException(e.getMessage(), e);
 		}
 	}
 

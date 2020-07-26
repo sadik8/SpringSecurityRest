@@ -19,7 +19,6 @@ public class UserDetailsService implements org.springframework.security.core.use
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		User user = userDao.findOneByUserId(username).orElseThrow(() -> new UsernameNotFoundException("User not found"));
-        user.setPassword("sadik");
 		TokenUser currentUser;
         if (user.isActive()){
             currentUser = new TokenUser(user);
